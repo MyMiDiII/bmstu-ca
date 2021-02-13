@@ -35,6 +35,7 @@ if __name__ == "__main__":
 
     try:
         func_table = interp.read_table(ARGS.file_name)
+        x = float(input("Введите значения аргумента для интерполяции: "))
 
     except FileNotFoundError:
         print("Такого файла не существует!")
@@ -42,16 +43,22 @@ if __name__ == "__main__":
     except ValueError:
         print("Файл не должен содержать нечисловой информации!")
 
-    else:
-        if not func_table:
-            print("Пустой файл!")
-        else:
-            func_table.sort(key=lambda table: table[0])
-            print("Загруженная таблица:")
-            interp.print_table(func_table)
+    except EOFError:
+        print("Пустой файл!")
 
-            newton = []
-            hermit = []
-            for n in range(LOWER, UPPER + 1):
-                newton.append()
-                hermit.append()
+    except TypeError:
+        print("Значение аргумента должно быть вещественным числом!")
+
+    else:
+        func_table.sort(key=lambda table: table[0])
+        interp.print_table(func_table)
+
+        newton = []
+        hermit = []
+        for n in range(LOWER, UPPER + 1):
+            newton.append(interp.newton_find_y(func_table, x))
+            hermit.append(interp.hermit_find_y(func_table, x))
+
+        interp.print_result(newton, hermit)
+
+        print(interp.newton_find_root(func_table))
