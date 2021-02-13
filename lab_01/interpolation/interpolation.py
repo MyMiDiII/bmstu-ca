@@ -54,4 +54,11 @@ def newton_find_y(table, arg, degree):
         Поиск значения отсортированной по аргументу табличной
         функции с помощью интерполяции полиномом Ньютона
     """
-    pass
+
+    arg_position = find_x_position(table, arg)
+
+    # выбор значений для полинома
+    calculaton_table = create_calc_table(table, arg_position, n)
+
+    # подсчет коэффициентов
+    # подсчет значения
