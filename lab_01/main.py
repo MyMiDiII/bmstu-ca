@@ -6,7 +6,6 @@
 """
 
 # ?  необходимо ли запрашивать степень полинома
-# -> ввод аргумента 
 # -> подсчет полинома Ньютона
 # -> подсчет полинома Эрмита
 # -> отчет
@@ -53,12 +52,16 @@ if __name__ == "__main__":
         func_table.sort(key=lambda table: table[0])
         interp.print_table(func_table)
 
+        print(interp.find_x_position(func_table, x))
+
+        """
         newton = []
         hermit = []
         for n in range(LOWER, UPPER + 1):
-            newton.append(interp.newton_find_y(func_table, x))
-            hermit.append(interp.hermit_find_y(func_table, x))
+            newton.append(interp.newton_find_y(func_table, x, n))
+            hermit.append(interp.hermit_find_y(func_table, x, n))
 
         interp.print_result(newton, hermit)
 
         print(interp.newton_find_root(func_table))
+        """
