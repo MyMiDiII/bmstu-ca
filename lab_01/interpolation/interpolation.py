@@ -61,9 +61,17 @@ def create_calc_table(table, arg_position, coef_num):
     begin = begin if begin + coef_num < len(table) else len(table) - coef_num
 
     for i in range(begin, begin + coef_num):
-        res_table.append([table[i][0], table[i][1]])
+        res_table.append([x for x in table[i]])
 
     return res_table
+
+
+def delete_derivative(table):
+    """
+        Удаление слобца производных
+    """
+    for rec in table:
+        rec.pop()
 
 
 def calc_divided_difference(y0, y1, x0, x1):
@@ -74,23 +82,25 @@ def calc_divided_difference(y0, y1, x0, x1):
     return (y0 - y1) / (x0 - x1)
 
 
-def calc_coef(calc_table):
+def calc_coef(calc_table, first_col):
     """
-        Подсчет коэффициентов полинома Ньютона
+        Подсчет коэффициентов полинома
         с помощью разделенных разностей
     """
 
-    for y in range(1, len(calc_table)):
+    for y in range(first_col, len(calc_table)):
+        print("y =", y)
         for i in range(0, len(calc_table) - y):
+            print("i = ", i)
             calc_table[i].append(calc_divided_difference(
-                calc_table[i][y], calc_table[i + 1][y],
+                calc_table[i][y],
+                calc_table[i + 1][y],
                 calc_table[i][0], calc_table[i + y][0]))
 
 
 def calc_func(calc_table, arg):
     """
-        Подсчет значения функции с помощью
-        полинома Ньютона
+        Подсчет значения функции с помощью таблицы разделенных разностей
     """
 
     result = 0
@@ -103,15 +113,52 @@ def calc_func(calc_table, arg):
     return result
 
 
-def newton_find_y(table, arg, degree):
+def newton_find_y(table, arg, power):
     """
         Поиск значения отсортированной по аргументу табличной
         функции с помощью интерполяции полиномом Ньютона
     """
 
     arg_position = find_x_position(table, arg)
-    calculaton_table = create_calc_table(table, arg_position, degree + 1)
-    calc_coef(calculaton_table)
+    calculaton_table = create_calc_table(table, arg_position, power + 1)
+    delete_derivative(calculaton_table)
+    calc_coef(calculaton_table, 1)
+    result = calc_func(calculaton_table, arg)
+
+    return result
+
+
+def add_node(table, power):
+    """
+        Добавление повторных узлов
+    """
+
+    i = 0
+    count_node = len(table)
+    while count_node < power + 1:
+        new_diff = ([] if i == count_node
+                       else [calc_divided_difference(
+                                table[i][1], table[i + 1][1],
+                                table[i][0], table[i + 1][1])])
+        new_rec = table[i][:2] + new_diff
+        table = table[:i + 1] + [new_rec] + table[i + 1:]
+        count_node += 1
+        i += 2
+
+    return table
+
+
+def hermit_find_y(table, arg, power):
+    """
+        Поиск значения отсортированной по аргументу табличной
+        функции с помощью интерполяции полиномом Эрмита
+    """
+    print("new pow")
+    arg_position = find_x_position(table, arg)
+    calculaton_table = create_calc_table(table, arg_position, power // 2 + 1)
+    calculaton_table = add_node(calculaton_table, power)
+    print(calculaton_table)
+    calc_coef(calculaton_table, 2)
     result = calc_func(calculaton_table, arg)
 
     return result

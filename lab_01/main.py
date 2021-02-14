@@ -51,16 +51,14 @@ if __name__ == "__main__":
         print("Значение аргумента должно быть вещественным числом!")
 
     else:
-
-        #print(interp.find_x_position(func_table, x))
-
         newton = []
-        #hermit = []
+        hermit = []
         for n in range(LOWER, UPPER + 1):
             newton.append(interp.newton_find_y(func_table, x, n))
-            #hermit.append(interp.hermit_find_y(func_table, x, n))
+            hermit.append(interp.hermit_find_y(func_table, x, n))
 
         print(newton)
+        print(hermit)
         #interp.print_result(newton, hermit)
 
         #print(interp.newton_find_root(func_table))
