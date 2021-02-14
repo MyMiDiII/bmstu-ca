@@ -5,8 +5,6 @@
     ИНТЕРПОЛЯЦИИ ТАБЛИЧНЫХ ФУНКЦИЙ
 """
 
-# ?  необходимо ли запрашивать степень полинома
-# -> подсчет полинома Ньютона
 # -> подсчет полинома Эрмита
 # -> отчет
 
@@ -34,6 +32,10 @@ if __name__ == "__main__":
 
     try:
         func_table = interp.read_table(ARGS.file_name)
+
+        func_table.sort(key=lambda table: table[0])
+        interp.print_table(func_table)
+
         x = float(input("Введите значения аргумента для интерполяции: "))
 
     except FileNotFoundError:
@@ -49,19 +51,16 @@ if __name__ == "__main__":
         print("Значение аргумента должно быть вещественным числом!")
 
     else:
-        func_table.sort(key=lambda table: table[0])
-        interp.print_table(func_table)
 
-        print(interp.find_x_position(func_table, x))
+        #print(interp.find_x_position(func_table, x))
 
-        """
         newton = []
-        hermit = []
+        #hermit = []
         for n in range(LOWER, UPPER + 1):
             newton.append(interp.newton_find_y(func_table, x, n))
-            hermit.append(interp.hermit_find_y(func_table, x, n))
+            #hermit.append(interp.hermit_find_y(func_table, x, n))
 
-        interp.print_result(newton, hermit)
+        print(newton)
+        #interp.print_result(newton, hermit)
 
-        print(interp.newton_find_root(func_table))
-        """
+        #print(interp.newton_find_root(func_table))
