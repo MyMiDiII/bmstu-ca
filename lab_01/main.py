@@ -16,6 +16,7 @@ import interpolation as interp
 LOWER = 1
 UPPER = 4
 
+
 def create_args():
     """
         Добавление аргументов командной строки

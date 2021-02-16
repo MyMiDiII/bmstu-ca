@@ -2,6 +2,7 @@
     Модуль для работы с табличными функциями
 """
 
+
 def read_table(file_name):
     """
         Чтение табличной функции из файла
@@ -53,13 +54,13 @@ def print_result(newton, hermit, root):
     print(" Полинома        1         2         3         4")
     print("----------------------------------------------------")
 
-    print("{:^11}".format("Ньютона"), end = " ")
+    print("{:^11}".format("Ньютона"), end=" ")
     print_list(newton)
 
-    print("{:^11}".format("Эрмита"), end = " ")
+    print("{:^11}".format("Эрмита"), end=" ")
     print_list(hermit)
 
-    print("{:^11}".format("Корeнь¹"), end = " ")
+    print("{:^11}".format("Корeнь¹"), end=" ")
     print_list(root)
 
     print("----------------------------------------------------")
@@ -166,13 +167,14 @@ def create_node(nearest_nodes):
     """
 
     der = ([] if len(nearest_nodes) != 2
-              else [calc_divided_difference(
-                nearest_nodes[0][1],
-                nearest_nodes[1][1],
-                nearest_nodes[0][0],
-                nearest_nodes[1][0]
-                )]
-          )
+           else [calc_divided_difference(
+                    nearest_nodes[0][1],
+                    nearest_nodes[1][1],
+                    nearest_nodes[0][0],
+                    nearest_nodes[1][0]
+                )
+                ]
+                )
 
     node = nearest_nodes[0][:2] + der
 
