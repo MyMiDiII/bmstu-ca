@@ -2,8 +2,6 @@
     Модуль для работы с табличными функциями
 """
 
-EPS = 1e-6
-
 def read_table(file_name):
     """
         Чтение табличной функции из файла
@@ -78,6 +76,7 @@ def calc_divided_difference(y0, y1, x0, x1):
     """
         Подсчет разделенной разности
     """
+    print(y0, y1, x0, x1)
 
     return (y0 - y1) / (x0 - x1)
 
@@ -89,9 +88,7 @@ def calc_coef(calc_table, first_col):
     """
 
     for y in range(first_col, len(calc_table)):
-        print("y =", y)
         for i in range(0, len(calc_table) - y):
-            print("i = ", i)
             calc_table[i].append(calc_divided_difference(
                 calc_table[i][y],
                 calc_table[i + 1][y],
@@ -109,6 +106,7 @@ def calc_func(calc_table, arg):
     for i in range(1, len(calc_table[0])):
         result += calc_table[0][i] * mul
         mul *= arg - calc_table[i - 1][0]
+    # добавлять корень в конце первого
 
     return result
 
@@ -118,6 +116,7 @@ def newton_find_y(table, arg, power):
         Поиск значения отсортированной по аргументу табличной
         функции с помощью интерполяции полиномом Ньютона
     """
+    print("NEWTON")
 
     arg_position = find_x_position(table, arg)
     calculaton_table = create_calc_table(table, arg_position, power + 1)
@@ -128,22 +127,44 @@ def newton_find_y(table, arg, power):
     return result
 
 
+def create_node(nearest_nodes):
+    """
+        Создание узла таблицы
+    """
+    print(nearest_nodes)
+
+    der = ([] if len(nearest_nodes) != 2
+              else [calc_divided_difference(
+                nearest_nodes[0][1],
+                nearest_nodes[1][1],
+                nearest_nodes[0][0],
+                nearest_nodes[1][0]
+                )]
+          )
+
+    node = nearest_nodes[0][:2] + der
+
+    return [node]
+
+
 def add_node(table, power):
     """
         Добавление повторных узлов
     """
 
+    needed_num = power + 1
+    cur_num = len(table)
+
     i = 0
-    count_node = len(table)
-    while count_node < power + 1:
-        new_diff = ([] if i == count_node
-                       else [calc_divided_difference(
-                                table[i][1], table[i + 1][1],
-                                table[i][0], table[i + 1][1])])
-        new_rec = table[i][:2] + new_diff
-        table = table[:i + 1] + [new_rec] + table[i + 1:]
-        count_node += 1
+    while cur_num < needed_num:
+        new_node = create_node(table[i:i+2])
+        table = table[:i+1] + new_node + table[i+1:]
+        cur_num += 1
         i += 2
+
+    i = power
+
+    table[i] = table[i][:2]
 
     return table
 
@@ -153,12 +174,25 @@ def hermit_find_y(table, arg, power):
         Поиск значения отсортированной по аргументу табличной
         функции с помощью интерполяции полиномом Эрмита
     """
-    print("new pow")
+    print("HERMIT")
+
     arg_position = find_x_position(table, arg)
     calculaton_table = create_calc_table(table, arg_position, power // 2 + 1)
     calculaton_table = add_node(calculaton_table, power)
-    print(calculaton_table)
+
+    print("with new node")
+    for x in calculaton_table:
+        print(x)
+
     calc_coef(calculaton_table, 2)
+
+    print("full\n")
+    for x in calculaton_table:
+        print(x)
+
+    print()
+    print("end")
+    print()
     result = calc_func(calculaton_table, arg)
 
     return result
