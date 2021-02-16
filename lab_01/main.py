@@ -21,6 +21,7 @@ def create_args():
     """
         Добавление аргументов командной строки
     """
+
     parser = argparse.ArgumentParser()
     parser.add_argument('file_name', nargs='?', default='data/data_01.txt')
     args = parser.parse_args()

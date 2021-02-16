@@ -7,6 +7,7 @@ def read_table(file_name):
     """
         Чтение табличной функции из файла
     """
+
     func_table = []
 
     with open(file_name, "r") as file:
@@ -38,6 +39,7 @@ def print_list(res_list):
     """
         Вывод списка для таблицы
     """
+
     for y in res_list:
         print("{:9.6f}".format(y), end=" ")
     print()
@@ -73,6 +75,7 @@ def find_x_position(table, arg):
     """
         Поиск положения заданного аргумента в таблице
     """
+
     prev_arg_index = 0
     num_table_args = len(table)
 
@@ -168,13 +171,13 @@ def create_node(nearest_nodes):
 
     der = ([] if len(nearest_nodes) != 2
            else [calc_divided_difference(
-                    nearest_nodes[0][1],
-                    nearest_nodes[1][1],
-                    nearest_nodes[0][0],
-                    nearest_nodes[1][0]
-                )
-                ]
-                )
+               nearest_nodes[0][1],
+               nearest_nodes[1][1],
+               nearest_nodes[0][0],
+               nearest_nodes[1][0]
+           )
+    ]
+    )
 
     node = nearest_nodes[0][:2] + der
 
@@ -191,8 +194,8 @@ def add_node(table, power):
 
     i = 0
     while cur_num < needed_num:
-        new_node = create_node(table[i:i+2])
-        table = table[:i+1] + new_node + table[i+1:]
+        new_node = create_node(table[i:i + 2])
+        table = table[:i + 1] + new_node + table[i + 1:]
         cur_num += 1
         i += 2
 
@@ -220,6 +223,7 @@ def newton_find_root(table, power):
     """
         Поиск корня с помощью обратной интерполяции
     """
+
     deep_copy = []
 
     for rec in table:
