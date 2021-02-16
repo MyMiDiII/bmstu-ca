@@ -11,8 +11,11 @@ def read_table(file_name):
     func_table = []
 
     with open(file_name, "r") as file:
-        for rec in file:
+        for i, rec in enumerate(file):
             func_table.append(list(map(float, rec.split())))
+
+            if len(func_table[i]) != 3:
+                raise TypeError
 
     if not func_table:
         raise EOFError
@@ -67,7 +70,7 @@ def print_result(newton, hermit, root):
 
     print("----------------------------------------------------")
 
-    print("\n¹ -- корень заданной табличной функции полученный")
+    print("\n¹ -- корень заданной табличной функции, полученный")
     print("     с помощью обратной интерполяции")
 
 
@@ -175,9 +178,8 @@ def create_node(nearest_nodes):
                nearest_nodes[1][1],
                nearest_nodes[0][0],
                nearest_nodes[1][0]
-           )
-    ]
-    )
+           )]
+          )
 
     node = nearest_nodes[0][:2] + der
 

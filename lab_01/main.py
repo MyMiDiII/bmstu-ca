@@ -5,9 +5,6 @@
     ИНТЕРПОЛЯЦИИ ТАБЛИЧНЫХ ФУНКЦИЙ
 """
 
-# -> обратная интерполяция
-# -> отчет
-
 import argparse
 
 import interpolation as interp
@@ -49,6 +46,9 @@ if __name__ == "__main__":
 
     except EOFError:
         print("\nПустой файл!")
+
+    except TypeError:
+        print("\nВ файле должно быть три столбца с данными!")
 
     else:
         newton = []
