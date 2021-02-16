@@ -5,13 +5,12 @@
     ИНТЕРПОЛЯЦИИ ТАБЛИЧНЫХ ФУНКЦИЙ
 """
 
-# -> подсчет полинома Эрмита
 # -> обратная интерполяция
 # -> отчет
 
 import argparse
 
-import interpolation.interpolation as interp
+import interpolation as interp
 
 
 LOWER = 1
@@ -58,8 +57,6 @@ if __name__ == "__main__":
             newton.append(interp.newton_find_y(func_table, x, n))
             hermit.append(interp.hermit_find_y(func_table, x, n))
 
-        print(newton)
-        print(hermit)
-        #interp.print_result(newton, hermit)
+        interp.print_result(newton, hermit)
 
         #print(interp.newton_find_root(func_table))
