@@ -36,27 +36,25 @@ if __name__ == "__main__":
         func_table.sort(key=lambda table: table[0])
         interp.print_table(func_table)
 
-        x = float(input("Введите значения аргумента для интерполяции: "))
+        x = float(input("\nВведите значения аргумента для интерполяции: "))
 
     except FileNotFoundError:
-        print("Такого файла не существует!")
+        print("\nТакого файла не существует!")
 
     except ValueError:
-        print("Файл не должен содержать нечисловой информации!")
+        print("\nНечисловые данные недопустимы!")
+        print("\nПроверьте содержимое файла или введенный аргумент!")
 
     except EOFError:
-        print("Пустой файл!")
-
-    except TypeError:
-        print("Значение аргумента должно быть вещественным числом!")
+        print("\nПустой файл!")
 
     else:
         newton = []
         hermit = []
+        root = []
         for n in range(LOWER, UPPER + 1):
             newton.append(interp.newton_find_y(func_table, x, n))
             hermit.append(interp.hermit_find_y(func_table, x, n))
+            root.append(interp.newton_find_root(func_table, n))
 
-        interp.print_result(newton, hermit)
-
-        #print(interp.newton_find_root(func_table))
+        interp.print_result(newton, hermit, root)

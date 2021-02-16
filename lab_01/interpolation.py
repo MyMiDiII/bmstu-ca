@@ -33,6 +33,41 @@ def print_table(table):
         print("    {:.2f}  {:9.6f}  {:.5f}".format(rec[0], rec[1], rec[2]))
 
 
+def print_list(res_list):
+    """
+        Вывод списка для таблицы
+    """
+    for y in res_list:
+        print("{:9.6f}".format(y), end=" ")
+    print()
+
+
+def print_result(newton, hermit, root):
+    """
+        Вывод таблицы значений функции и корней при
+        различных степенях полиномов Ньютона и Эрмита
+    """
+
+    print("\n----------------------------------------------------")
+    print("   Вид                       Степень ")
+    print(" Полинома        1         2         3         4")
+    print("----------------------------------------------------")
+
+    print("{:^11}".format("Ньютона"), end = " ")
+    print_list(newton)
+
+    print("{:^11}".format("Эрмита"), end = " ")
+    print_list(hermit)
+
+    print("{:^11}".format("Корeнь¹"), end = " ")
+    print_list(root)
+
+    print("----------------------------------------------------")
+
+    print("\n¹ -- корень заданной табличной функции полученный")
+    print("     с помощью обратной интерполяции")
+
+
 def find_x_position(table, arg):
     """
         Поиск положения заданного аргумента в таблице
@@ -68,6 +103,7 @@ def delete_derivative(table):
     """
         Удаление слобца производных
     """
+
     for rec in table:
         rec.pop()
 
@@ -76,7 +112,6 @@ def calc_divided_difference(y0, y1, x0, x1):
     """
         Подсчет разделенной разности
     """
-    print(y0, y1, x0, x1)
 
     return (y0 - y1) / (x0 - x1)
 
@@ -106,7 +141,6 @@ def calc_func(calc_table, arg):
     for i in range(1, len(calc_table[0])):
         result += calc_table[0][i] * mul
         mul *= arg - calc_table[i - 1][0]
-    # добавлять корень в конце первого
 
     return result
 
@@ -116,7 +150,6 @@ def newton_find_y(table, arg, power):
         Поиск значения отсортированной по аргументу табличной
         функции с помощью интерполяции полиномом Ньютона
     """
-    print("NEWTON")
 
     arg_position = find_x_position(table, arg)
     calculaton_table = create_calc_table(table, arg_position, power + 1)
@@ -131,7 +164,6 @@ def create_node(nearest_nodes):
     """
         Создание узла таблицы
     """
-    print(nearest_nodes)
 
     der = ([] if len(nearest_nodes) != 2
               else [calc_divided_difference(
@@ -174,25 +206,30 @@ def hermit_find_y(table, arg, power):
         Поиск значения отсортированной по аргументу табличной
         функции с помощью интерполяции полиномом Эрмита
     """
-    print("HERMIT")
 
     arg_position = find_x_position(table, arg)
     calculaton_table = create_calc_table(table, arg_position, power // 2 + 1)
     calculaton_table = add_node(calculaton_table, power)
 
-    print("with new node")
-    for x in calculaton_table:
-        print(x)
+    return calc_func(calculaton_table, arg)
 
-    calc_coef(calculaton_table, 2)
 
-    print("full\n")
-    for x in calculaton_table:
-        print(x)
+def newton_find_root(table, power):
+    """
+        Поиск корня с помощью обратной интерполяции
+    """
+    deep_copy = []
 
-    print()
-    print("end")
-    print()
-    result = calc_func(calculaton_table, arg)
+    for rec in table:
+        deep_copy.append([])
+        for arg in rec:
+            deep_copy[len(deep_copy) - 1].append(arg)
 
-    return result
+    for rec in deep_copy:
+        rec[0], rec[1] = rec[1], rec[0]
+
+    deep_copy.sort(key=lambda row: row[0])
+
+    res = newton_find_y(deep_copy, 0, power)
+
+    return res
