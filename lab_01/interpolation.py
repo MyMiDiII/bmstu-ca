@@ -1,5 +1,6 @@
 """
-    Модуль для работы с табличными функциями
+    Модуль, реализующий полиномиальную
+    интерполяцию табличных функций
 """
 
 
@@ -181,9 +182,7 @@ def create_node(nearest_nodes):
            )]
           )
 
-    node = nearest_nodes[0][:2] + der
-
-    return [node]
+    return [nearest_nodes[0][:2] + der]
 
 
 def add_node(table, power):
@@ -217,6 +216,7 @@ def hermit_find_y(table, arg, power):
     arg_position = find_x_position(table, arg)
     calculaton_table = create_calc_table(table, arg_position, power // 2 + 1)
     calculaton_table = add_node(calculaton_table, power)
+    calc_coef(calculaton_table, 2)
 
     return calc_func(calculaton_table, arg)
 
