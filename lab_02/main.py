@@ -55,8 +55,7 @@ if __name__ == "__main__":
         result = []
 
         for n in range(LOWER, UPPER + 1):
-            for m in range(n, UPPER + 1):
-                print(n, m)
+            for m in range(LOWER, UPPER + 1):
                 result.append(interp.find_z(func_table, x, y, n, m))
 
         interp.print_result(result)

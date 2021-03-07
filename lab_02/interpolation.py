@@ -55,7 +55,11 @@ def print_list(res_list):
         Вывод списка для таблицы
     """
     for i, z in enumerate(res_list):
-        print("{:9.6f}".format(z), end=(" " if i + 1 < len(res_list) else "\n"))
+        if i % 3 == 0:
+            print("│{:6d}    │".format(i // 3 + 1), end = ' ')
+
+        print("{:9.3f}".format(z),
+              end=(" " if (i + 1) % 3 else " │\n"))
 
 
 def print_result(result):
@@ -63,12 +67,11 @@ def print_result(result):
         Вывод таблицы значений функции двух переменных
     """
 
-    print("\n-----------------------------------")
-    print(" n =      1         2         3")
-    print("-----------------------------------")
-    print(" z =", end=" ")
+    print("\n┌──────────┬───────────────────────────────┐")
+    print("│ n_x\\n_y  │       1         2         3   │")
+    print("├──────────┼───────────────────────────────┤")
     print_list(result)
-    print("-----------------------------------")
+    print("└──────────────────────────────────────────┘")
 
 
 def find_x_position(table, x_arg):
@@ -101,12 +104,14 @@ def find_y_position(table, y_arg):
 
 def find_begin(max_len, position, coef_num):
     """
-        Поиск индекса начала
+        Поиск индекса начала промежутка,
+        в котором лежит аргумент
     """
     begin = position - coef_num // 2 + 1
     begin = begin if begin >= 1 else 1
     begin = begin if begin + coef_num < max_len else max_len - coef_num
-return begin
+
+    return begin
 
 
 def create_calc_table(table, x_pos, y_pos, x_coef_num, y_coef_num):
@@ -114,7 +119,6 @@ def create_calc_table(table, x_pos, y_pos, x_coef_num, y_coef_num):
         Выбор значений для подсчета коэффициентов полиномов
     """
     res_table = [[0.] * (x_coef_num + 1) for i in range(y_coef_num + 1)]
-    print(res_table)
 
     x_begin = find_begin(len(table[0]), x_pos, x_coef_num)
     y_begin = find_begin(len(table), y_pos, y_coef_num)
