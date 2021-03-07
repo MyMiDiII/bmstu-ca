@@ -33,7 +33,6 @@ if __name__ == "__main__":
 
     try:
         func_table = interp.read_table(ARGS.file_name)
-        #func_table.sort(key=lambda table: table[0])
         interp.print_table(func_table)
 
         x, y = map(float, input(INPUT_MSG).split())
@@ -43,7 +42,7 @@ if __name__ == "__main__":
 
     except ValueError:
         print("\nНечисловые данные недопустимы!")
-        print("Проверьте содержимое файла или введенный аргумент!")
+        print("Проверьте содержимое файла или введенные аргументы!")
 
     except EOFError:
         print("\nПустой файл!")
