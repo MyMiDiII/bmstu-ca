@@ -39,7 +39,7 @@ def print_table(table):
 
     if table:
         print("Загруженная таблица:")
-        print("{:>8s}".format("y\\x"), end ="")
+        print("{:>8s}".format("y\\x"), end="")
     else:
         print("Пустой файл!")
 
@@ -56,7 +56,7 @@ def print_list(res_list):
     """
     for i, z in enumerate(res_list):
         if i % 3 == 0:
-            print("│{:6d}    │".format(i // 3 + 1), end = ' ')
+            print("│{:6d}    │".format(i // 3 + 1), end=' ')
 
         print("{:9.3f}".format(z),
               end=(" " if (i + 1) % 3 else " │\n"))
@@ -127,7 +127,7 @@ def create_calc_table(table, x_pos, y_pos, x_coef_num, y_coef_num):
         res_table[0][i - x_begin + 1] = table[0][i]
 
     for j in range(y_begin, y_begin + y_coef_num):
-        res_table[j - y_begin + 1][0] = table[j][0] 
+        res_table[j - y_begin + 1][0] = table[j][0]
 
     for i in range(x_begin, x_begin + x_coef_num):
         for j in range(y_begin, y_begin + y_coef_num):
@@ -178,9 +178,8 @@ def interpolate_by_x(table, arg):
     """
     x_table = []
 
-    for i, x in enumerate(table[0]):
-        if i:
-            x_table.append([table[0][i], 0.])
+    for i in range(1, len(table[0])):
+        x_table.append([table[0][i], 0.])
 
     result = []
 
@@ -202,9 +201,8 @@ def interpolate_by_y(table, z_by_x, arg):
     """
     y_table = []
 
-    for i, y_row in enumerate(table):
-        if i:
-            y_table.append([table[i][0], 0.])
+    for i in range(1, len(table)):
+        y_table.append([table[i][0], 0.])
 
     result = []
 
@@ -230,4 +228,3 @@ def find_z(table, x, y, x_power, y_power):
     result = interpolate_by_y(calculaton_table, x_interp_result, y)
 
     return result
-
