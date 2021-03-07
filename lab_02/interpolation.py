@@ -3,6 +3,9 @@
     интерполяцию табличных функций
 """
 
+import copy
+
+
 EPS = 1e-7
 
 
@@ -51,12 +54,9 @@ def print_list(res_list):
     """
         Вывод списка для таблицы
     """
-
-    # поправить вывод
     for i, z in enumerate(res_list):
-        if (i < 3):
-            print("{:9.6f}".format(z), end=(" " if i < 2 else "\n"))
-    """i + 1 < len(res_list)"""
+        print("{:9.6f}".format(z), end=(" " if i + 1 < len(res_list) else "\n"))
+
 
 def print_result(result):
     """
@@ -106,15 +106,15 @@ def find_begin(max_len, position, coef_num):
     begin = position - coef_num // 2 + 1
     begin = begin if begin >= 1 else 1
     begin = begin if begin + coef_num < max_len else max_len - coef_num
-
-    return begin
+return begin
 
 
 def create_calc_table(table, x_pos, y_pos, x_coef_num, y_coef_num):
     """
         Выбор значений для подсчета коэффициентов полиномов
     """
-    res_table = [[0.] * (y_coef_num + 1) for i in range(x_coef_num + 1)]
+    res_table = [[0.] * (x_coef_num + 1) for i in range(y_coef_num + 1)]
+    print(res_table)
 
     x_begin = find_begin(len(table[0]), x_pos, x_coef_num)
     y_begin = find_begin(len(table), y_pos, y_coef_num)
@@ -123,12 +123,11 @@ def create_calc_table(table, x_pos, y_pos, x_coef_num, y_coef_num):
         res_table[0][i - x_begin + 1] = table[0][i]
 
     for j in range(y_begin, y_begin + y_coef_num):
-        res_table[j - y_begin + 1][0] = table[j][0]
+        res_table[j - y_begin + 1][0] = table[j][0] 
 
     for i in range(x_begin, x_begin + x_coef_num):
         for j in range(y_begin, y_begin + y_coef_num):
-            res_table[i - x_begin + 1][j - y_begin + 1] = table[i][j]
-    print(res_table)
+            res_table[j - y_begin + 1][i - x_begin + 1] = table[i][j]
 
     return res_table
 
@@ -159,7 +158,6 @@ def calc_func(calc_table, arg):
     """
         Подсчет значения функции с помощью таблицы разделенных разностей
     """
-
     result = 0
     mul = 1
 
@@ -170,18 +168,62 @@ def calc_func(calc_table, arg):
     return result
 
 
+def interpolate_by_x(table, arg):
+    """
+        Интерполяция по x
+    """
+    x_table = []
+
+    for i, x in enumerate(table[0]):
+        if i:
+            x_table.append([table[0][i], 0.])
+
+    result = []
+
+    for i, y_row in enumerate(table):
+        if i:
+            for j, z in enumerate(y_row):
+                if j:
+                    x_table[j - 1][1] = z
+            x_table_copy = copy.deepcopy(x_table)
+            calc_coef(x_table_copy, 1)
+            result.append(calc_func(x_table_copy, arg))
+
+    return result
+
+
+def interpolate_by_y(table, z_by_x, arg):
+    """
+        Интерполяция по y
+    """
+    y_table = []
+
+    for i, y_row in enumerate(table):
+        if i:
+            y_table.append([table[i][0], 0.])
+
+    result = []
+
+    for i, z in enumerate(z_by_x):
+        y_table[i][1] = z
+
+    calc_coef(y_table, 1)
+    result = calc_func(y_table, arg)
+
+    return result
+
+
 def find_z(table, x, y, x_power, y_power):
     """
         Поиск значения табличной функции двух
         переменных при заданных значениях аргументов
     """
     x_position = find_x_position(table, x)
-    y_position = find_x_position(table, y)
+    y_position = find_y_position(table, y)
     calculaton_table = create_calc_table(table, x_position, y_position,
                                          x_power + 1, y_power + 1)
-    #calc_coef(calculaton_table, 1)
-    #result = calc_func(calculaton_table, arg)
-    result = []
+    x_interp_result = interpolate_by_x(calculaton_table, x)
+    result = interpolate_by_y(calculaton_table, x_interp_result, y)
 
     return result
 

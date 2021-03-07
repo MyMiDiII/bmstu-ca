@@ -52,9 +52,11 @@ if __name__ == "__main__":
         print("\nНеверный формат файла!")
 
     else:
-        result = func_table[0]
+        result = []
 
         for n in range(LOWER, UPPER + 1):
-            interp.find_z(func_table, x, y, n, n)
+            for m in range(n, UPPER + 1):
+                print(n, m)
+                result.append(interp.find_z(func_table, x, y, n, m))
 
         interp.print_result(result)
