@@ -74,29 +74,16 @@ def print_result(result):
     print("└──────────────────────────────────────────┘")
 
 
-def find_x_position(table, x_arg):
+def find_position(table, arg, demension):
     """
-        Поиск положения заданного аргумента x в таблице
-    """
-    prev_arg_index = 1
-    num_table_args = len(table[0])
-
-    while (prev_arg_index < num_table_args and
-           x_arg > table[0][prev_arg_index]):
-        prev_arg_index += 1
-
-    return prev_arg_index - 1
-
-
-def find_y_position(table, y_arg):
-    """
-        Поиск положения заданного аргумента y в таблице
+        Поиск положения заданного аргумента в таблице
     """
     prev_arg_index = 1
-    num_table_args = len(table)
+    base = table if demension else [[x] for x in table[0]]
+    num_table_args = len(base)
 
     while (prev_arg_index < num_table_args and
-           y_arg > table[prev_arg_index][0]):
+           arg > base[prev_arg_index][0]):
         prev_arg_index += 1
 
     return prev_arg_index - 1
@@ -149,6 +136,7 @@ def calc_coef(calc_table, first_col):
         Подсчет коэффициентов полинома
         с помощью разделенных разностей
     """
+    print(calc_table)
 
     for y in range(first_col, len(calc_table)):
         for i in range(0, len(calc_table) - y):
@@ -172,16 +160,29 @@ def calc_func(calc_table, arg):
     return result
 
 
-def interpolate_by_x(table, arg):
+def interpolate(tables, arg):
     """
-        Интерполяция по x
+        Интерполяция по одной переменной
+    """
+    result = []
+    for table in tables:
+        table_copy = copy.deepcopy(table)
+        calc_coef(table_copy, 1)
+        result.append(calc_func(table_copy, arg))
+
+    return result
+
+
+def crt_tables_by_x(table, arg):
+    """
+        Создание таблицы для интерполяции по x
     """
     x_table = []
 
     for i in range(1, len(table[0])):
         x_table.append([table[0][i], 0.])
 
-    result = []
+    tables = []
 
     for i, y_row in enumerate(table):
         if i:
@@ -189,30 +190,24 @@ def interpolate_by_x(table, arg):
                 if j:
                     x_table[j - 1][1] = z
             x_table_copy = copy.deepcopy(x_table)
-            calc_coef(x_table_copy, 1)
-            result.append(calc_func(x_table_copy, arg))
+            tables.append(x_table_copy)
 
-    return result
+    return tables
 
 
-def interpolate_by_y(table, z_by_x, arg):
+def crt_table_by_y(table, z_by_x, arg):
     """
-        Интерполяция по y
+        Создание таблицы для интерполяции по y
     """
     y_table = []
 
     for i in range(1, len(table)):
         y_table.append([table[i][0], 0.])
 
-    result = []
-
     for i, z in enumerate(z_by_x):
         y_table[i][1] = z
 
-    calc_coef(y_table, 1)
-    result = calc_func(y_table, arg)
-
-    return result
+    return y_table
 
 
 def find_z(table, x, y, x_power, y_power):
@@ -220,11 +215,13 @@ def find_z(table, x, y, x_power, y_power):
         Поиск значения табличной функции двух
         переменных при заданных значениях аргументов
     """
-    x_position = find_x_position(table, x)
-    y_position = find_y_position(table, y)
+    x_position = find_position(table, x, 0)
+    y_position = find_position(table, y, 1)
     calculaton_table = create_calc_table(table, x_position, y_position,
                                          x_power + 1, y_power + 1)
-    x_interp_result = interpolate_by_x(calculaton_table, x)
-    result = interpolate_by_y(calculaton_table, x_interp_result, y)
+    x_tables = crt_tables_by_x(calculaton_table, x)
+    x_interp_result = interpolate(x_tables, x)
+    y_tables = [crt_table_by_y(calculaton_table, x_interp_result, y)]
+    result = interpolate(y_tables, y)
 
-    return result
+    return result[0]
