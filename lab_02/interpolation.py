@@ -184,13 +184,11 @@ def crt_tables_by_x(table, arg):
 
     tables = []
 
-    for i, y_row in enumerate(table):
-        if i:
-            for j, z in enumerate(y_row):
-                if j:
-                    x_table[j - 1][1] = z
-            x_table_copy = copy.deepcopy(x_table)
-            tables.append(x_table_copy)
+    for i in range(1, len(table)):
+        for j in range(1, len(table[i])):
+            x_table[j - 1][1] = table[i][j]
+        x_table_copy = copy.deepcopy(x_table)
+        tables.append(x_table_copy)
 
     return tables
 
