@@ -80,3 +80,34 @@ def get_c_coefs(func, arg):
     c_coefs = find_c_coefs(ksi_coefs, eta_coefs)
 
     return c_coefs
+
+
+def get_x_position(func, x):
+    """
+        Поиск положения элемента в таблице
+    """
+
+    pos = 0
+
+    while x > func[pos][0]:
+        pos += 1
+
+    pos -= 1
+
+    if pos < 0:
+        pos = 0
+
+    if pos > len(func) - 1:
+        pos = len(func) - 1
+
+    return pos
+
+
+def count_spline(func, x):
+    """
+        Подсчет значения функции сплайн-интерполяцией
+    """
+    position = get_x_position(func, x)
+
+    a_coef = func[position][1]
+    return a_coef

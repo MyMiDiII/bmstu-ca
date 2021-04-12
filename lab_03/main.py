@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     else:
         print("Результат сплайн-интерполяции:")
-        print(spline.get_c_coefs(func_table, x))
+        print(spline.count_spline(func_table, x))
 
         print("Результат инерполяции полиномом Ньютона 3-ей степени:")
         print(newton.find_newton_y(func_table, x, 3))
