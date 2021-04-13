@@ -93,10 +93,13 @@ def get_x_position(func, x):
 
     pos = 0
 
-    while x > func[pos][0]:
+    while pos < len(func) and x > func[pos][0]:
         pos += 1
 
     pos -= 1
+
+    if (pos > len(func) - 2):
+        pos = len(func) - 2
 
     if pos < 0:
         pos = 0
