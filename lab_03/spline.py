@@ -25,13 +25,13 @@ def find_f_coefs(func, h):
     return f_coefs
 
 
-def find_ksi_coefs(func, h):
+def find_ksi_coefs(h):
     """
         Поиск коэффициентов ξ
     """
     ksi_coefs = [0., 0.]
 
-    for i in range(2, len(func)):
+    for i in range(2, len(h) + 1):
         cur_ksi = (- h[i - 1] / (h[i - 2] * ksi_coefs[i - 1]
                    + 2 * (h[i - 2] + h[i - 1])))
         ksi_coefs.append(cur_ksi)
@@ -39,13 +39,13 @@ def find_ksi_coefs(func, h):
     return ksi_coefs
 
 
-def find_eta_coefs(func, ksi, h, f):
+def find_eta_coefs(ksi, h, f):
     """
         Поиск коэффициентов η
     """
     eta_coefs = [0., 0.]
 
-    for i in range(2, len(func)):
+    for i in range(2, len(h) + 1):
         cur_eta = ((f[i - 1] - h[i - 2] * eta_coefs[i - 1]) /
                    (h[i - 2] * ksi[i - 1] + 2 * (h[i - 2] + h[i - 1])))
         eta_coefs.append(cur_eta)
@@ -70,9 +70,9 @@ def get_c_coefs(func, h_coefs):
     """
         Поиск коффициентов при второй степени сплайна
     """
-    ksi_coefs = find_ksi_coefs(func, h_coefs)
+    ksi_coefs = find_ksi_coefs(h_coefs)
     f_coefs = find_f_coefs(func, h_coefs)
-    eta_coefs = find_eta_coefs(func, ksi_coefs, h_coefs, f_coefs)
+    eta_coefs = find_eta_coefs(ksi_coefs, h_coefs, f_coefs)
     c_coefs = find_c_coefs(ksi_coefs, eta_coefs)
 
     return c_coefs
