@@ -7,7 +7,9 @@
 
 import argparse
 
-import table_func, newton, spline
+import table_func
+import newton
+import spline
 
 
 def create_args():

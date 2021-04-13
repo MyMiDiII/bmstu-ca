@@ -84,4 +84,3 @@ def find_newton_y(table, arg, power):
     result = calc_func(calculaton_table, arg)
 
     return result
-

@@ -36,4 +36,3 @@ def print_table(table):
 
     for rec in table:
         print("    {:.2f}  {:9.2f}".format(rec[0], rec[1]))
-
