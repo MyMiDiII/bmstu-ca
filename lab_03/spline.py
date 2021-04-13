@@ -60,7 +60,7 @@ def find_c_coefs(ksi, eta):
         Подсчет коэффициентов с
     """
     num = len(eta)
-    c_coefs = [0]
+    c_coefs = [0., 0.]
     print("ksi:")
     for k in ksi:
         print("{:.6f}".format(k))
@@ -69,9 +69,9 @@ def find_c_coefs(ksi, eta):
         print("{:.6f}".format(e))
 
     for i in range(num - 1, 1, -1):
-        c_coefs.insert(0, ksi[i] * c_coefs[0] + eta[i])
+        c_coefs.insert(1, ksi[i] * c_coefs[1] + eta[i])
 
-    return c_coefs
+    return c_coefs[:-1]
 
 
 def get_c_coefs(func, h_coefs):
@@ -96,8 +96,10 @@ def get_x_position(func, x):
     while x > func[pos][0]:
         pos += 1
 
-    if pos > len(func) - 1:
-        pos = len(func) - 1
+    pos -= 1
+
+    if pos < 0:
+        pos = 0
 
     return pos
 
@@ -106,14 +108,23 @@ def get_b_coefs(func, h, c):
     """
         Подсчет коэффициентов b
     """
-    b_coefs = [0.]
+    b_coefs = []
     N = len(func) - 1
 
+    print("b_debug")
+    print(N)
+
     for i in range(1, N):
-        cur_b = (func[i][1] - func[i - 1][1]) / h[i] - h[i] * (c[i + 1] - 2 * c[i]) / 3
+        print(h[i-1])
+        print(func[i][1] - func[i - 1][1])
+        print(c[i], c[i - 1])
+        # разобарться с этой формулой
+        cur_b = (func[i][1] - func[i - 1][1]) / h[i - 1] - (h[i - 1] * (c[i] + 2 * c[i - 1])) / 3
+
+        print(cur_b)
         b_coefs.append(cur_b)
 
-    b_coefs.append((func[N][1] - func[N - 1][1]) / h[N] - h[N] * 2 * c[N] / 3)
+    b_coefs.append((func[N][1] - func[N - 1][1]) / h[N - 1] - h[N - 1] * 2 * c[N - 1] / 3)
 
     return b_coefs
 
@@ -122,14 +133,14 @@ def get_d_coefs(h, c):
     """
         Подсчет коэффициентов b
     """
-    d_coefs = [0.]
-    N = len(h) - 1
+    d_coefs = []
+    N = len(h)
 
     for i in range(1, N):
-        cur_d = (c[i + 1] - c[i]) / (3 * h[i])
+        cur_d = (c[i] - c[i - 1]) / (3 * h[i - 1])
         d_coefs.append(cur_d)
 
-    d_coefs.append(- c[N] / (3 * h[N]))
+    d_coefs.append(- c[N - 1] / (3 * h[N - 1]))
 
     return d_coefs
 
@@ -140,7 +151,7 @@ def count_spline(func, x):
     """
     position = get_x_position(func, x)
 
-    a_coefs = [point[1] for point in func]
+    a_coefs = [point[1] for point in func[:-1]]
 
     print("a:")
     for a in a_coefs:
@@ -171,7 +182,9 @@ def count_spline(func, x):
         print("{:.6f}".format(d))
     print()
 
+    print("pos ", position)
     dif = x - func[position][0]
+    print(dif)
 
     answer = a_coefs[position] + b_coefs[position] * dif + c_coefs[position] * dif ** 2 + d_coefs[position] * dif ** 3
 
