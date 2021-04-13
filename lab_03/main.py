@@ -49,8 +49,11 @@ if __name__ == "__main__":
         print("\nВ файле должно быть три столбца с данными!")
 
     else:
+        print("Точное значение:")
+        print("{:.6f}".format(x * x))
+
         print("Результат сплайн-интерполяции:")
-        print(spline.count_spline(func_table, x))
+        print("{:.6f}".format(spline.count_spline(func_table, x)))
 
         print("Результат инерполяции полиномом Ньютона 3-ей степени:")
-        print(newton.find_newton_y(func_table, x, 3))
+        print("{:.6f}".format(newton.find_newton_y(func_table, x, 3)))
