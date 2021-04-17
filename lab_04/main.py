@@ -1,7 +1,7 @@
-import sys  
+import sys
 from PyQt5 import QtWidgets, uic
-from pyqtgraph import PlotWidget, plot
-import pyqtgraph as pg
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView
+import matplotlib.pyplot as plt
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -9,19 +9,26 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        # Загрузите страницу интерфейса
         uic.loadUi('mainwindow.ui', self)
+        self.plotBtn.clicked.connect(generate)
 
-        self.plot([1,2,3,4,5,6,7,8,9,10], [30,32,34,32,33,31,29,32,35,45])
+        self.pointsTable.setColumnCount(3)
+        self.pointsTable.setRowCount(1)
+        self.pointsTable.setItem(0, 0, QTableWidgetItem("0.9989"))
+        self.pointsTable.setItem(0, 1, QTableWidgetItem("Text in column 2"))
+        self.pointsTable.setItem(0, 2, QTableWidgetItem("Text in column 3"))
+        self.pointsTable.horizontalHeader().setSectionResizeMode(2,QtWidgets.QHeaderView.Stretch)
+        print(self.pointsTable.item(0,0).text())
 
-    # мы добавили метод plot(), который принимает два массива: 
-    # temperature и hour, затем строит данные с помощью метода graphWidget.plot().
 
-    def plot(self, hour, temperature):
-        self.graphWidget.plot(hour, temperature)
+def generate():
+    plt.scatter(1.0, 1.0)
+    plt.show()
+
 
 if __name__ == '__main__': 
     app = QtWidgets.QApplication(sys.argv)
+
     main = MainWindow()
     main.show()
     sys.exit(app.exec_())
