@@ -15,14 +15,33 @@ def getEquationSystem(table, degree):
             curB += table[k][2] * table[k][1] * pow(table[k][0], i)
         slae[i][degree + 1] = curB
 
-
-    print(slae)
-
     return slae
 
+
+def solveSLAE(slae):
+    print(slae)
+    length = len(slae)
+    for j in range(length):
+        for i in range(j + 1, length):
+            curCoef = slae[i][j] / slae[j][j]
+
+            for k in range(j, length + 1):
+                slae[i][k] -= curCoef * slae[j][k]
+
+    answer = [0. for i in range(length)]
+
+    for i in range(length - 1, -1, -1):
+        for j in range(length - 1, i, -1):
+            slae[i][length] -= slae[i][j] * answer[j]
+
+        answer[i] = slae[i][length] / slae[i][i]
+
+    print(answer)
+    return answer
 
 
 def getPlot(table, degree):
     slae = getEquationSystem(table, degree)
+    polinomial = solveSLAE(slae)
 
     return ([1, 2, 3, 4, 5], [degree] * 5)

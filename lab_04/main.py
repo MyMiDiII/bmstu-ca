@@ -98,7 +98,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         return table
 
 
-
 if __name__ == '__main__': 
     app = QtWidgets.QApplication(sys.argv)
     main = MainWindow()
