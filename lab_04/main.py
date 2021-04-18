@@ -89,6 +89,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             plot = graphics.getPlot(table, degree)
             plt.plot(plot[0], plot[1], label="{:d}-я степень".format(degree))
 
+        plt.get_current_fig_manager().window.move(700, 100)
+        plt.get_current_fig_manager().resize(1000, 758)
         plt.grid()
         plt.legend()
         plt.show()
@@ -105,5 +107,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 if __name__ == '__main__': 
     app = QtWidgets.QApplication(sys.argv)
     main = MainWindow()
+    main.move(200, 100)
     main.show()
     sys.exit(app.exec_())
