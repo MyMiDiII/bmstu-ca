@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from MainWindow import Ui_MainWindow
 # // from graphics import generate
 import points
+import graphics
 
 class DoubleDelegate(QtWidgets.QItemDelegate):
 
@@ -81,10 +82,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         plt.close()
 
+        table = self.getTable()
+
         for degree in degrees:
-            plt.plot([1, 2, 3, 4, 5], [degree] * 5)
+            plot = graphics.getPlot(table, degree)
+            plt.plot(plot[0], plot[1])
 
         plt.show()
+
+    
+    def getTable(self):
+        table = []
+        for i in range(self.pointsTable.rowCount()):
+            table.append([self.pointsTable.item(i, j).text() 
+                          for j in range(3)])
+        return table
+
 
 
 if __name__ == '__main__': 

@@ -24,10 +24,3 @@ def generateTable(num, equal=[False, 0.]):
         table.append(rec)
 
     return table
-
-"""
-TODO
-
-EXAMPLE
-print(self.pointsTable.item(0,0).text())
-"""
