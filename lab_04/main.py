@@ -14,9 +14,17 @@ from MainWindow import Ui_MainWindow
 import points
 import graphics
 
-class DoubleDelegate(QtWidgets.QItemDelegate):
+class doubleDelegate(QtWidgets.QItemDelegate):
+    """
+        Класс настройки полей для ввода
+        вещественных чисел
+    """
 
     def createEditor(self, parent, option, index):
+        """
+            Настрока поля ввода на
+            получение только вещественных чисел
+        """
         self.doubleSpin = QtWidgets.QDoubleSpinBox(parent)
         self.doubleSpin.setMaximum(1000)
         if index.column() == 2:
@@ -27,8 +35,14 @@ class DoubleDelegate(QtWidgets.QItemDelegate):
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+    """
+        Класс главного окна
+    """
 
     def __init__(self, *args, **kwargs):
+        """
+            Инициализация главного окна
+        """
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
@@ -39,22 +53,31 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     def table_init(self):
+        """
+            Начальные настройки таблицы
+        """
         self.pointsTable.setColumnCount(3)
-        delegate = DoubleDelegate()
+        delegate = doubleDelegate()
         for i in range(3):
             self.pointsTable.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
             self.pointsTable.setItemDelegateForColumn(i, delegate)
 
 
     def switch(self):
+        """
+            Блокировка/разблокировка поля ввода веса
+        """
         self.weightsDSpin.setDisabled(self.weightsDSpin.isEnabled())
 
 
     def generateTable(self):
+        """
+            Генерация таблицы по введенным данным
+        """
         num = self.pointsNumSpin.value()
 
         equal = [False, 0.]
-        if (self.weightsRadioBtn.isChecked()):
+        if self.weightsRadioBtn.isChecked():
             equal = [True, self.weightsDSpin.value()]
 
         table = points.generateTable(num, equal)
@@ -66,6 +89,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     def getPlots(self):
+        """
+            Получение графиков по таблице
+        """
         checks = [
             self.degree1Check,
             self.degree2Check,
@@ -76,7 +102,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         degrees = []
         for i, check in enumerate(checks):
-            if (check.isChecked()):
+            if check.isChecked():
                 degrees.append(i + 1)
 
         plt.close()
@@ -95,8 +121,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         plt.legend()
         plt.show()
 
-    
+
     def getTable(self):
+        """
+            Получение таблицы
+        """
         table = []
         for i in range(self.pointsTable.rowCount()):
             table.append([float(self.pointsTable.item(i, j).text())
@@ -104,7 +133,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         return table
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     main = MainWindow()
     main.move(200, 100)

@@ -4,20 +4,28 @@
 """
 from numpy import random
 
-def random_list(min, max, num):
-    return [round(el[0], 2) for el in 
-            random.uniform(min, max, size=(num, 1)).tolist()]
+def generateRandomList(left, right, num):
+    """
+        Генерация списка со случайными
+        значениями в заданном диапазоне
+        заданного размера
+    """
+    return [round(el[0], 2) for el in
+            random.uniform(left, right, size=(num, 1)).tolist()]
 
 def generateTable(num, equal=[False, 0.]):
+    """
+        Генерация таблицы точек заданного размера
+    """
     table = []
 
-    xlist = random_list(-100, 100, num) 
-    ylist = random_list(-100, 100, num)
+    xlist = generateRandomList(-100, 100, num)
+    ylist = generateRandomList(-100, 100, num)
 
     if equal[0]:
         rolist = [equal[1]] * num
     else:
-        rolist = random_list(0, 100, num)
+        rolist = generateRandomList(0, 100, num)
 
     for i in range(num):
         rec = [xlist[i], ylist[i], rolist[i]]
