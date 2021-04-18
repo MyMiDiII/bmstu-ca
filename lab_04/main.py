@@ -1,9 +1,17 @@
+"""
+    Модуль для запуска программы
+    ЛАБОРАТОРНАЯ РАБОТА №4
+    ПОСТРОЕНИЕ И ПРОГРАММНАЯ РЕАЛИЗАЦИЯ АЛГОРИТМА
+    НАИЛУЧШЕГО СРЕДНЕКВАДРАТИЧНОГО ПРИБЛИЖЕНИЯ
+"""
+
 import sys
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView
 
 from MainWindow import Ui_MainWindow
-from graphics import generate
+# // from graphics import generate
+import points
 
 class DoubleDelegate(QtWidgets.QItemDelegate):
 
@@ -23,16 +31,36 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
-        self.plotBtn.clicked.connect(generate)
         self.table_init()
+        self.generateBtn.clicked.connect(self.generateTable)
+        self.weightsRadioBtn.clicked.connect(self.switch)
+
 
     def table_init(self):
         self.pointsTable.setColumnCount(3)
-        self.pointsTable.setRowCount(1)
         delegate = DoubleDelegate()
         for i in range(3):
             self.pointsTable.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
             self.pointsTable.setItemDelegateForColumn(i, delegate)
+
+
+    def switch(self):
+        self.weightsDSpin.setDisabled(self.weightsDSpin.isEnabled())
+
+
+    def generateTable(self):
+        num = self.pointsNumSpin.value()
+
+        equal = [False, 0.]
+        if (self.weightsRadioBtn.isChecked()):
+            equal = [True, self.weightsDSpin.value()]
+
+        table = points.generateTable(num, equal)
+
+        self.pointsTable.setRowCount(num)
+        for i, rec in enumerate(table):
+            for j, value in enumerate(rec):
+                self.pointsTable.setItem(i, j, QTableWidgetItem(str(value)))
 
 
 if __name__ == '__main__': 
