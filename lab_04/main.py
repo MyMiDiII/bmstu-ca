@@ -1,9 +1,21 @@
 import sys
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView
-import matplotlib.pyplot as plt
 
 from MainWindow import Ui_MainWindow
+from graphics import generate
+
+class DoubleDelegate(QtWidgets.QItemDelegate):
+
+    def createEditor(self, parent, option, index):
+        self.doubleSpin = QtWidgets.QDoubleSpinBox(parent)
+        self.doubleSpin.setMaximum(1000)
+        if index.column() == 2:
+            self.doubleSpin.setMinimum(0)
+        else:
+            self.doubleSpin.setMinimum(-1000)
+        return self.doubleSpin
+
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
@@ -12,19 +24,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.plotBtn.clicked.connect(generate)
+        self.table_init()
 
+    def table_init(self):
         self.pointsTable.setColumnCount(3)
         self.pointsTable.setRowCount(1)
-        self.pointsTable.setItem(0, 0, QTableWidgetItem("0.9989"))
-        self.pointsTable.setItem(0, 1, QTableWidgetItem("Text in column 2"))
-        self.pointsTable.setItem(0, 2, QTableWidgetItem("Text in column 3"))
-        self.pointsTable.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
-        print(self.pointsTable.item(0,0).text())
-
-
-def generate():
-    plt.scatter(1.0, 1.0)
-    plt.show()
+        delegate = DoubleDelegate()
+        for i in range(3):
+            self.pointsTable.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
+            self.pointsTable.setItemDelegateForColumn(i, delegate)
 
 
 if __name__ == '__main__': 
