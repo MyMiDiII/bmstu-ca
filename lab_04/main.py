@@ -82,11 +82,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         plt.close()
 
         table = self.getTable()
+        plt.plot(graphics.getXs(table), graphics.getYs(table),
+                 "o", label="Исходные")
 
         for degree in degrees:
             plot = graphics.getPlot(table, degree)
-            plt.plot(plot[0], plot[1])
+            plt.plot(plot[0], plot[1], label="{:d}-я степень".format(degree))
 
+        plt.grid()
+        plt.legend()
         plt.show()
 
     

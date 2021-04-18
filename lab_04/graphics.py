@@ -19,7 +19,6 @@ def getEquationSystem(table, degree):
 
 
 def solveSLAE(slae):
-    print(slae)
     length = len(slae)
     for j in range(length):
         for i in range(j + 1, length):
@@ -36,12 +35,52 @@ def solveSLAE(slae):
 
         answer[i] = slae[i][length] / slae[i][i]
 
-    print(answer)
     return answer
+
+
+def getPointsFunc(polinomial, span):
+    step = (span[1] - span[0]) / 1000
+
+    xData = []
+    yData = []
+
+    xCur = span[0] - step
+
+    while (xCur < span[1] + step):
+        yCur = 0
+
+        for i, coef in enumerate(polinomial):
+            yCur += coef * pow(xCur, i)
+
+        xData.append(xCur)
+        yData.append(yCur)
+
+        xCur += step
+
+    return xData, yData
+
+
+def getXs(table):
+    return [rec[0] for rec in table]
+
+
+def getYs(table):
+    return [rec[1] for rec in table]
+
+
+def findMaximumX(table):
+    return max(getXs(table))
+
+
+def findMinimumX(table):
+    return min(getXs(table))
 
 
 def getPlot(table, degree):
     slae = getEquationSystem(table, degree)
     polinomial = solveSLAE(slae)
+    minX = findMinimumX(table)
+    maxX = findMaximumX(table)
+    pointsFunc = getPointsFunc(polinomial, [minX, maxX])
 
-    return ([1, 2, 3, 4, 5], [degree] * 5)
+    return pointsFunc
