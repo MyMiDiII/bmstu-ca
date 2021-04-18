@@ -8,6 +8,7 @@
 import sys
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView
+import matplotlib.pyplot as plt
 
 from MainWindow import Ui_MainWindow
 # // from graphics import generate
@@ -34,6 +35,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.table_init()
         self.generateBtn.clicked.connect(self.generateTable)
         self.weightsRadioBtn.clicked.connect(self.switch)
+        self.plotBtn.clicked.connect(self.getPlots)
 
 
     def table_init(self):
@@ -61,6 +63,28 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for i, rec in enumerate(table):
             for j, value in enumerate(rec):
                 self.pointsTable.setItem(i, j, QTableWidgetItem(str(value)))
+
+
+    def getPlots(self):
+        checks = [
+            self.degree1Check,
+            self.degree2Check,
+            self.degree3Check,
+            self.degree4Check,
+            self.degree5Check
+            ]
+
+        degrees = []
+        for i, check in enumerate(checks):
+            if (check.isChecked()):
+                degrees.append(i + 1)
+
+        plt.close()
+
+        for degree in degrees:
+            plt.plot([1, 2, 3, 4, 5], [degree] * 5)
+
+        plt.show()
 
 
 if __name__ == '__main__': 
