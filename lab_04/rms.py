@@ -1,6 +1,7 @@
 """
     Модуль среднеквадратичного приближения
 """
+EPS = 1e-6
 
 def getEquationSystem(table, degree):
     """
@@ -31,6 +32,9 @@ def solveSLAE(slae):
     length = len(slae)
     for j in range(length):
         for i in range(j + 1, length):
+            if abs(slae[j][j]) < EPS:
+                continue
+
             curCoef = slae[i][j] / slae[j][j]
 
             for k in range(j, length + 1):
@@ -41,6 +45,10 @@ def solveSLAE(slae):
     for i in range(length - 1, -1, -1):
         for j in range(length - 1, i, -1):
             slae[i][length] -= slae[i][j] * answer[j]
+
+        if abs(slae[i][i]) < EPS:
+            answer[i] = slae[i][length]
+            continue
 
         answer[i] = slae[i][length] / slae[i][i]
 

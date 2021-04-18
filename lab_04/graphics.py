@@ -9,6 +9,9 @@ def getPointsFunc(polinomial, span):
     """
     step = (span[1] - span[0]) / 1000
 
+    if abs(step) < rms.EPS:
+        step = 10
+
     xData = []
     yData = []
 
