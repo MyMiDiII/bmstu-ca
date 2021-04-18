@@ -11,7 +11,6 @@ from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView
 import matplotlib.pyplot as plt
 
 from MainWindow import Ui_MainWindow
-# // from graphics import generate
 import points
 import graphics
 
@@ -94,7 +93,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def getTable(self):
         table = []
         for i in range(self.pointsTable.rowCount()):
-            table.append([self.pointsTable.item(i, j).text() 
+            table.append([float(self.pointsTable.item(i, j).text())
                           for j in range(3)])
         return table
 
