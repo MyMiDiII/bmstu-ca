@@ -34,6 +34,14 @@ class doubleDelegate(QtWidgets.QItemDelegate):
         return self.doubleSpin
 
 
+def callError(title, text):
+    msg = QtWidgets.QMessageBox()
+    msg.setIcon(QtWidgets.QMessageBox.Critical)
+    msg.setWindowTitle(title)
+    msg.setText(text)
+    msg.exec_()
+
+
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     """
         Класс главного окна
@@ -103,6 +111,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         degrees = []
         for i, check in enumerate(checks):
             if check.isChecked():
+                if i + 1 >= self.pointsTable.rowCount():
+                    callError("n >= N!", "Полином не может быть построен")
+                    return
+
                 degrees.append(i + 1)
 
         plt.close()
