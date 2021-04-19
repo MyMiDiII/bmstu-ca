@@ -22,7 +22,7 @@ class doubleDelegate(QtWidgets.QItemDelegate):
 
     def createEditor(self, parent, option, index):
         """
-            Настрока поля ввода на
+            Настройка поля ввода на
             получение только вещественных чисел
         """
         self.doubleSpin = QtWidgets.QDoubleSpinBox(parent)
