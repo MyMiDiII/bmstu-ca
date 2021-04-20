@@ -117,20 +117,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 degrees.append(i + 1)
 
-        plt.close()
-
         table = self.getTable()
-        plt.plot(graphics.getXs(table), graphics.getYs(table),
-                 "o", label="Исходные")
+
+        if not plt.get_fignums():
+            plt.plot(graphics.getXs(table), graphics.getYs(table),
+                    "o", label="Исходные")
 
         for degree in degrees:
             plot = graphics.getPlot(table, degree)
             plt.plot(plot[0], plot[1], label="{:d}-я степень".format(degree))
+            plt.draw()
 
         plt.get_current_fig_manager().window.move(700, 100)
         plt.get_current_fig_manager().resize(1000, 758)
-        plt.grid()
         plt.legend()
+        plt.grid(True)
         plt.show()
 
 
