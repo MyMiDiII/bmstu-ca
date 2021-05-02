@@ -43,8 +43,8 @@ def gauss(func, left, right, num):
     return (right - left) / 2 * result
 
 
-def getTauFunc(xNum, yNum):
+def getTauFunc(func, tetaConf, phiConf):
     """
         Получение функции, зависящей только от tau
     """
-    return lambda tau: tau ** 2
+    return lambda tau : func(tau, 0.5, 0.5)

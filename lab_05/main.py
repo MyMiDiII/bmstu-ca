@@ -5,8 +5,17 @@
     АЛГОРИТМОВ ЧИСЛЕННОГО ИНТЕГРИРОВАНИЯ
 """
 
+from math import sin, cos, exp, pi
+
 import integration
 import graphics
+
+subFunc = (lambda teta, phi :
+           2 * cos(teta) / (1 - sin(teta) ** 2 * cos(phi) ** 2))
+fullFunc = (lambda tau, teta, phi :
+            4 / pi * (1 - exp(-tau * subFunc(teta, phi)))
+            * cos(teta) * sin(teta))
+
 
 if __name__ == "__main__":
 
@@ -25,7 +34,9 @@ if __name__ == "__main__":
         print("\nКоличество узлов -- натуральное число!")
 
     else:
-        tauFunc = integration.getTauFunc(N, M)
+        tetaRange = [0, pi / 2]
+        phiRange = [0, pi / 2]
+        tauFunc = integration.getTauFunc(fullFunc, (tetaRange, N), (phiRange, M))
         print("Вычисленное значение интеграла:", tauFunc(tau))
 
         graphics.getGraph(tauFunc, [0.05, 10])
