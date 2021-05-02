@@ -24,11 +24,14 @@ if __name__ == "__main__":
     while notEnd:
         try:
             N = int(input("Введите количество узлов по x: "))
-            M = int(input("Введите количество узлов по y: "))
-            tau = float(input("Введите параметр τ: "))
-
-            if N < 1 or M < 1:
+            if N < 1:
                 raise TypeError
+
+            M = int(input("Введите количество узлов по y: "))
+            if M < 1:
+                raise TypeError
+
+            tau = float(input("Введите параметр τ: "))
 
         except ValueError:
             print("\nНечисловые данные недопустимы!")
@@ -42,8 +45,9 @@ if __name__ == "__main__":
             tauFunc = integration.getTauFunc(fullFunc, (tetaRange, N), (phiRange, M))
             print("Вычисленное значение интеграла:", tauFunc(tau))
 
-            graphics.getGraph(tauFunc, [0.05, 10])
+            graphics.getGraph(tauFunc, [0.05, 10], N, M)
 
-            notEnd = int(input("Повторить? (0 - нет)"))
+            notEnd = input("\nДля выхода нажмите Enter"
+                           + "\nДля продолжения введите что-либо\n")
 
     graphics.show()

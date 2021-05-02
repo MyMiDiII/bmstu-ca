@@ -4,6 +4,7 @@
 
 from numpy.polynomial.legendre import leggauss
 
+
 def simpson(func, left, right, num):
     """
         Интегрирование методом Симпсона
@@ -49,15 +50,17 @@ def toTetaFunc(func, tau, phi):
     """
     return lambda teta : func(tau, phi, teta)
 
+
 def toPhiFunc(func, tau):
     """
         Получение функции для интегрирования по tau
     """
     return lambda phi : func(tau, phi)
 
+
 def getTauFunc(treeArgsFunc, tetaConf, phiConf):
     """
-        Получение функции, зависящей только от tau
+        Последовательное интегрирование
     """
     twoArgsFunc = (
         lambda tau, phi :
