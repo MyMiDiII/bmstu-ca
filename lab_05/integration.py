@@ -43,8 +43,40 @@ def gauss(func, left, right, num):
     return (right - left) / 2 * result
 
 
-def getTauFunc(func, tetaConf, phiConf):
+def toTetaFunc(func, tau, phi):
+    """
+        Получение функции для интегрирования по teta
+    """
+    return lambda teta : func(tau, phi, teta)
+
+def toPhiFunc(func, tau):
+    """
+        Получение функции для интегрирования по tau
+    """
+    return lambda phi : func(tau, phi)
+
+def getTauFunc(treeArgsFunc, tetaConf, phiConf):
     """
         Получение функции, зависящей только от tau
     """
-    return lambda tau : func(tau, 0.5, 0.5)
+    twoArgsFunc = (
+        lambda tau, phi :
+        gauss(
+            toTetaFunc(treeArgsFunc, tau, phi),
+            tetaConf[0][0],
+            tetaConf[0][1],
+            tetaConf[1]
+        )
+    )
+
+    oneArgFunc = (
+        lambda tau :
+        simpson(
+            toPhiFunc(twoArgsFunc, tau),
+            phiConf[0][0],
+            phiConf[0][1],
+            phiConf[1]
+        )
+    )
+
+    return oneArgFunc

@@ -25,12 +25,16 @@ def getPointFunc(func, xRange):
 
 def getGraph(func, xRange):
     """
-        Отображение графика
+        Добавление графика на изображение
     """
 
     xList, yList = getPointFunc(func, xRange)
 
     plt.plot(xList, yList, label="ε(τ)")
     plt.legend()
-    plt.show()
 
+def show():
+    """
+        Отображение графиков
+    """
+    plt.show()
