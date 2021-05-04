@@ -2,17 +2,46 @@
     Модуль численного дифференцирования
 """
 
-def getLeftHandDerList(func):
+def getLeftHandDer(cur, prev):
     """
-        Первая левосторонняя производная в каждой точке
+        Первая левосторонняя разростная производная
     """
-    result = [0]
-    print(func)
 
-    for i, point in enumerate(func):
-        if i:
-            der = ((point[1] - func[i - 1][1])
-                   / (point[0] - func[i - 1][0]))
-            result.append(der)
+    return (cur[1] - prev[1]) / (cur[0] - prev[0])
 
-    return result
+
+def getCentralDer(prevP, nextP):
+    """
+        Первая центральная разростная
+        производная в каждой точке
+    """
+    return (nextP[1] - prevP[1]) / (nextP[0] - prevP[0])
+
+
+def getRungeDer(prev2P, prevP, curP):
+    """
+        2-ая формула Рунге с использованием
+        односторонней производной
+    """
+    step1Der = getLeftHandDer(curP, prevP)
+    step2Der = getLeftHandDer(curP, prev2P)
+
+    return 2 * step1Der - step2Der
+
+def getAlignVarDer(cur, prev):
+    """
+        Первая производная при
+        введенных выравнивающих переменных
+    """
+    alignVarCoef = (1 / cur[1] - 1 / prev[1]) / (1 / cur[0] - 1 / prev[0])
+    return cur[1] * cur[1] / cur[0] / cur[0] * alignVarCoef
+
+
+def getSecondDer(prevP, curP, nextP):
+    """
+        Вторая разностная производная
+    """
+    return ((prevP[1] - 2 * curP[1] + nextP[1])
+            / (nextP[0] - curP[0])
+            / (curP[0] - prevP[0]))
+

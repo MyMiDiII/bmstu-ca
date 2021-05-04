@@ -23,16 +23,16 @@ def read_table(file_name):
     return func_table
 
 
-def print_table(table, leftHand):
+def print_table(table):
     """
         Вывод табличной функции
     """
 
     if table:
         print("Загруженная таблица:")
-        print("      x        y        1")
+        print("      x        y")
     else:
         print("Пустой файл!")
 
-    for i, rec in enumerate(table):
-        print("    {:.2f}  {:9.3f}  {:9.3f}".format(rec[0], rec[1], leftHand[i]))
+    for rec in table:
+        print("    {:.2f}  {:9.3f}".format(rec[0], rec[1]))
