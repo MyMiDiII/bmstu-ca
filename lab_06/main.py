@@ -100,11 +100,18 @@ if __name__ == "__main__":
         print("\nВ файле должно быть два столбца с данными!")
 
     else:
-        print("Таблица разностных производных")
-        print("    1       2       3       4   ")
+        print("\nТаблица разностных производных")
+        print("    1       2       3       4       5   ")
         for i in range(len(func_table)):
             print(getLeftHandString(i, func_table), end=" ")
             print(getCentralString(i, func_table), end=" ")
             print(getRungeString(i, func_table), end=" ")
             print(getAlignVarString(i, func_table), end=" ")
             print(getSecondDerString(i, func_table), end="\n")
+
+        print()
+        print("1 -- левая разностная производная;")
+        print("2 -- центральная разностная производная;")
+        print("3 -- 2-ая формула Рунге с использованием односторонней (левой) производной;")
+        print("4 -- введены выравнивающие переменные;")
+        print("5 -- вторая разностная производная.")
