@@ -23,11 +23,11 @@ if __name__ == "__main__":
 
     while notEnd:
         try:
-            N = int(input("Введите количество узлов по x: "))
+            N = int(input("Введите количество узлов по θ: "))
             if N < 1:
                 raise TypeError
 
-            M = int(input("Введите количество узлов по y: "))
+            M = int(input("Введите количество узлов по φ: "))
             if M < 1:
                 raise TypeError
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
             tetaRange = [0, pi / 2]
             phiRange = [0, pi / 2]
             tauFunc = integration.getTauFunc(fullFunc, (tetaRange, N), (phiRange, M))
-            print("Вычисленное значение интеграла:", tauFunc(tau))
+            print("Вычисленное значение интеграла:", "{:6.3f}".format(tauFunc(tau)))
 
             graphics.getGraph(tauFunc, [0.05, 10], N, M)
 
