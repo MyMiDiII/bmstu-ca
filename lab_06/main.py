@@ -63,8 +63,8 @@ def getAlignVarString(i, func):
         переменных
     """
 
-    return ("{:7.3f}".format(getAlignVarDer(func[i], func[i - 1]))
-            if i else "{:>7s}".format("--"))
+    return ("{:7.3f}".format(getAlignVarDer(func[i], func[i + 1]))
+            if i != len(func) - 1 else "{:>7s}".format("--"))
 
 
 def getSecondDerString(i, func):
@@ -112,6 +112,7 @@ if __name__ == "__main__":
         print()
         print("1 -- левая разностная производная;")
         print("2 -- центральная разностная производная;")
-        print("3 -- 2-ая формула Рунге с использованием односторонней (левой) производной;")
+        print("3 -- 2-ая формула Рунге с использованием\n"
+              + "     односторонней (левой) производной;")
         print("4 -- введены выравнивающие переменные;")
         print("5 -- вторая разностная производная.")
